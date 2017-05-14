@@ -120,7 +120,7 @@
                         <td>
                         </td>
                         <td>
-                            <Date-picker type="date" v-if="isEdit" v-model="item['rectificateDate']" @on-ok="handleDate(index)"></Date-picker>
+                            <Date-picker type="date" :open= v-if="isEdit" v-model="item['rectificateDate']" @on-ok="handleDate(index)"></Date-picker>
                             <template v-else>{{item['rectificateDate']}}</template>
                         </td>
                         <td>
