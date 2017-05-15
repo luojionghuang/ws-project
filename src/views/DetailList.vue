@@ -12,9 +12,15 @@
         <div class="detail-content">
             <div class="detail-check">
                 <label>是否复查：</label>
-                <i-switch v-model="datas1.isReviewed" :disabled="!isEdit"></i-switch>
+                <i-switch v-model="datas1.isReviewed" :disabled="!isEdit">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
                 <label>是否立案：</label>
-                <i-switch v-model="datas1.isRecorded" :disabled="!isEdit"></i-switch>
+                <i-switch v-model="datas1.isRecorded" :disabled="!isEdit">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
             </div>
             <div class="detail-table-1">
                 <div class="table-header">
@@ -45,22 +51,22 @@
                                 <span v-else>{{datas1.checkDate}}</span>
                             </td>
                             <td :rowspan="rowSpan">
-                                <Input v-if="isEdit" v-model="datas1.companyName"></Input>
-                                <span v-else>{{datas1.companyName}}</span>
+                                <Input v-if="isEdit" v-model="datas1.enterpriseName"></Input>
+                                <span v-else>{{datas1.enterpriseName}}</span>
                             </td>
                             <td :rowspan="rowSpan">
-                                <Input v-if="isEdit" v-model="datas1.companyAddress"></Input>
-                                <template v-else>{{datas1.companyAddress}}</template>
+                                <Input v-if="isEdit" v-model="datas1.enterpriseAddress"></Input>
+                                <template v-else>{{datas1.enterpriseAddress}}</template>
                             </td>
                             <td :rowspan="rowSpan">
                                 <Input v-if="isEdit" v-model="datas1.checkPerson"></Input>
                                 <template v-else>{{datas1.checkPerson}}</template>
                             </td>
                             <td>
-                                <Select v-if="isEdit" v-model="datas1.action[0]" filterable>
-                                    <Option v-for="(item, key) in actionList" :value="key" :key="key">{{item}}</Option>
+                                <Select v-if="isEdit" v-model="datas1.situation[0]" filterable>
+                                    <Option v-for="(item, key) in situationList" :value="key" :key="key">{{item}}</Option>
                                 </Select>
-                                <template v-else>{{actionList[datas1.action[0]]}}</template>
+                                <template v-else>{{situationList[datas1.situation[0]]}}</template>
                             </td>
                             <td>
                                 <Input v-if="isEdit" v-model="datas1.method[0]"></Input>
@@ -91,10 +97,10 @@
                             </template>
                             <template v-else>
                                 <td>
-                                    <Select v-if="isEdit" v-model="datas1.action[index]" filterable>
-                                        <Option v-for="(item, key) in actionList" :value="key" :key="key">{{item}}</Option>
+                                    <Select v-if="isEdit" v-model="datas1.situation[index]" filterable>
+                                        <Option v-for="(item, key) in situationList" :value="key" :key="key">{{item}}</Option>
                                     </Select>
-                                    <template v-else>{{actionList[datas1.action[index]]}}</template>
+                                    <template v-else>{{situationList[datas1.situation[index]]}}</template>
                                 </td>
                                 <td>
                                     <Input v-if="isEdit" v-model="datas1.method[index]"></Input>
@@ -131,7 +137,7 @@
                             <td>
                             </td>
                             <td>
-                                {{item['actionOrDesc']}}
+                                {{item['situation']}}
                             </td>
                             <td>
                                 <div class="upload-img-list" v-for="img in fileList">
@@ -185,16 +191,16 @@
                     key: 'checkDate',
                 }, {
                     title: '执法检查（或复查）企业（场所）名称',
-                    key: 'companyName',
+                    key: 'enterpriseName',
                 }, {
                     title: '企业地址',
-                    key: 'companyAddress',
+                    key: 'enterpriseAddress',
                 }, {
                     title: '执法检查人员',
                     key: 'checkPerson',
                 }, {
                     title: '违法行为或隐患情况',
-                    key: 'action',
+                    key: 'situation',
                 }, {
                     title: '整改落实情况或处置措施',
                     key: 'method',
@@ -217,10 +223,10 @@
                     fillUnit: '马田中队',//填报单位
                     fillPerson: '蔡春婷',//填报人
                     checkDate: '2017-02-21',//执法检查日期
-                    companyName: '宝明发包装制品有限公司',//执法检查（或复查）企业（场所）名称
-                    companyAddress: '合水口社区第四工业区1期1栋3,4层',//企业地址
+                    enterpriseName: '宝明发包装制品有限公司',//执法检查（或复查）企业（场所）名称
+                    enterpriseAddress: '合水口社区第四工业区1期1栋3,4层',//企业地址
                     checkPerson: '林志松,王敏学',//执法检查人员
-                    action: [],//违法行为或隐患情况
+                    situation: [],//违法行为或隐患情况
                     method: [],//整改落实情况或处置措施
                     dutyUnit: '马田中队',//责任单位
                     dutyPerson: '麦柏基',//责任人
@@ -232,10 +238,10 @@
                     key: 'no'
                 }, {
                     title: '违法行为或隐患所在部位',
-                    key: 'actionOrPart'
+                    key: 'part'
                 }, {
                     title: '违法行为或隐患描述',
-                    key: 'actionOrDesc'
+                    key: 'situation'
                 }, {
                     title: '整改前照片',
                     key: 'beforeImg'
@@ -250,7 +256,7 @@
                     key: 'remark'
                 }],
                 datas2: [],
-                actionList: {
+                situationList: {
                     '1': '烤线没有提供检测报告',
                     '2': '未提供劳保用品发放记录签收表',
                     '3': '未建立事故隐患排查治理记录档案',
@@ -265,9 +271,9 @@
             rowSpan() {
                 let max = 0;
                 if(this.datas1) {
-                    let actionLength = this.datas1.action.length;
+                    let situationLength = this.datas1.situation.length;
                     let methodLength = this.datas1.method.length;
-                    max = actionLength > methodLength ? actionLength : methodLength;
+                    max = situationLength > methodLength ? situationLength : methodLength;
                     if(max == 0) {
                         max = 1;
                     }
@@ -288,16 +294,16 @@
             'datas1.finishDate': function() {
                 this.datas1.finishDate = moment(this.datas1.finishDate).format('YYYY-MM-DD');
             },
-            'datas1.action': function() {
-                this.datas1.action.forEach((item, index) => {
+            'datas1.situation': function() {
+                this.datas1.situation.forEach((item, index) => {
                     if(this.datas2[index]) {
-                        if(this.datas2[index].actionOrDesc != this.actionList[item]) {
-                            this.datas2[index].actionOrDesc = this.actionList[item];
+                        if(this.datas2[index].situation != this.situationList[item]) {
+                            this.datas2[index].situation = this.situationList[item];
                         }
                     } else {
                         this.datas2.push({
-                            actionOrPart: null,
-                            actionOrDesc: this.actionList[item],
+                            part: null,
+                            situation: this.situationList[item],
                             beforeImg: null,
                             rectificateDate: null,
                             afterImg: null,
@@ -336,19 +342,19 @@
             insertLine() {
                 let max = 0;
                 if(this.datas1) {
-                    let actionLength = this.datas1.action.length;
+                    let situationLength = this.datas1.situation.length;
                     let methodLength = this.datas1.method.length;
-                    max = actionLength > methodLength ? actionLength : methodLength;
+                    max = situationLength > methodLength ? situationLength : methodLength;
                     if(max == 0) {
-                        this.datas1.action.push('');
+                        this.datas1.situation.push('');
                     }
                 }
-                this.datas1.action.push('');
+                this.datas1.situation.push('');
             },
             handleDate(index) {
                 setTimeout(() => {
                     this.datas2[index].rectificateDate = moment(this.datas2[index].rectificateDate).format('YYYY-MM-DD')
-                }, 200);
+                }, 500);
             },
             handleBack() {
                 this.$router.go(-1)
