@@ -1,137 +1,154 @@
 <template>
     <div class="detail-wrapper">
         <div class="detail-header">
-            <Button v-if="!isEdit" type="primary" icon="document">导出Word</Button>
-            <Button :type="isEdit ? 'success' : 'primary'" :icon="isEdit ? 'checkmark' : 'edit'" @click="toggleEditStatus">{{isEdit ? '保存' : '编辑'}}</Button>
-        </div>
-        <div class="detail-table-1">
-            <div class="table-header">
-                <h1>表1：安全生产大排查大整治台账</h1>
+            <div class="detail-header-left">
+                <Button type="primary" icon="arrow-return-left" @click="handleBack">返回</Button>
             </div>
-            <Row class="table-pre">
-                <Col span="12" class="table-pre-left">
-                    <label>填报单位：</label>
-                    <Input class="input-style" v-if="isEdit" v-model="fillUnit"></Input>
-                    <span v-else>{{fillUnit}}</span>
-                </Col>
-                <Col span="12" class="table-pre-right">
-                    <label>填报人：</label>
-                    <Input class="input-style" v-if="isEdit" v-model="fillPerson"></Input>
-                    <span v-else>{{fillPerson}}</span>
-                </Col>
-            </Row>
-            <table class="main-table">
-                <thead>
-                    <tr>
-                        <th v-for="item in columns1">{{item.title}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td :rowspan="rowSpan">{{datas1.checkDate}}</td>
-                        <td :rowspan="rowSpan">{{datas1.companyName}}</td>
-                        <td :rowspan="rowSpan">
-                            <Input v-if="isEdit" v-model="datas1.companyAddress"></Input>
-                            <template v-else>{{datas1.companyAddress}}</template>
-                        </td>
-                        <td :rowspan="rowSpan">
-                            <Input v-if="isEdit" v-model="datas1.checkPerson"></Input>
-                            <template v-else>{{datas1.checkPerson}}</template>
-                        </td>
-                        <td>
-                            <Select v-if="isEdit" v-model="datas1.action[0]" filterable>
-                                <Option v-for="(item, key) in actionList" :value="key" :key="key">{{item}}</Option>
-                            </Select>
-                            <template v-else>{{actionList[datas1.action[0]]}}</template>
-                        </td>
-                        <td>
-                            <Input v-if="isEdit" v-model="datas1.method[0]"></Input>
-                            <template v-else>{{datas1.method[0]}}</template>
-                        </td>
-                        <td :rowspan="rowSpan">
-                            <Input v-if="isEdit" v-model="datas1.dutyUnit"></Input>
-                            <template v-else>{{datas1.dutyUnit}}</template>
-                        </td>
-                        <td :rowspan="rowSpan">
-                            <Input v-if="isEdit" v-model="datas1.dutyPerson"></Input>
-                            <template v-else>{{datas1.dutyPerson}}</template>
-                        </td>
-                        <td :rowspan="rowSpan">
-                            <Date-picker type="date" v-if="isEdit" v-model="datas1.finishDate"></Date-picker>
-                            <template v-else>{{datas1.finishDate}}</template>
-                        </td>
-                        <td :rowspan="rowSpan">
-                            <Input v-if="isEdit" v-model="datas1.remark"></Input>
-                            <template v-else>{{datas1.remark}}</template>
-                        </td>
-                    </tr>
-                    <tr v-for="index in (rowSpan - 1)">
-                        <template v-if="isEdit && index == (rowSpan - 1)">
-                            <td colspan="2">
-                                <Button type="primary" shape="circle" icon="plus" size="small" @click="insertLine()"></Button>
+            <div class="detail-header-right">
+                <Button v-if="!isEdit" type="primary" icon="document">导出Word</Button>
+                <Button :type="isEdit ? 'success' : 'primary'" :icon="isEdit ? 'checkmark' : 'edit'" @click="toggleEditStatus">{{isEdit ? '保存' : '编辑'}}</Button>
+            </div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-check">
+                <label>是否复查：</label>
+                <i-switch v-model="isReviewed" :disabled="!isEdit"></i-switch>
+                <label>是否立案：</label>
+                <i-switch v-model="isRecorded" :disabled="!isEdit"></i-switch>
+            </div>
+            <div class="detail-table-1">
+                <div class="table-header">
+                    <h1>表1：安全生产大排查大整治台账</h1>
+                </div>
+                <Row class="table-pre">
+                    <Col span="12" class="table-pre-left">
+                        <label>填报单位：</label>
+                        <Input class="input-style" v-if="isEdit" v-model="datas1.fillUnit"></Input>
+                        <span v-else>{{datas1.fillUnit}}</span>
+                    </Col>
+                    <Col span="12" class="table-pre-right">
+                        <label>填报人：</label>
+                        <Input class="input-style" v-if="isEdit" v-model="datas1.fillPerson"></Input>
+                        <span v-else>{{datas1.fillPerson}}</span>
+                    </Col>
+                </Row>
+                <table class="main-table">
+                    <thead>
+                        <tr>
+                            <th v-for="item in columns1">{{item.title}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td :rowspan="rowSpan">
+                                <Date-picker type="date" v-if="isEdit" v-model="datas1.checkDate"></Date-picker>
+                                <span v-else>{{datas1.checkDate}}</span>
                             </td>
-                        </template>
-                        <template v-else>
+                            <td :rowspan="rowSpan">
+                                <Input v-if="isEdit" v-model="datas1.companyName"></Input>
+                                <span v-else>{{datas1.companyName}}</span>
+                            </td>
+                            <td :rowspan="rowSpan">
+                                <Input v-if="isEdit" v-model="datas1.companyAddress"></Input>
+                                <template v-else>{{datas1.companyAddress}}</template>
+                            </td>
+                            <td :rowspan="rowSpan">
+                                <Input v-if="isEdit" v-model="datas1.checkPerson"></Input>
+                                <template v-else>{{datas1.checkPerson}}</template>
+                            </td>
                             <td>
-                                <Select v-if="isEdit" v-model="datas1.action[index]" filterable>
+                                <Select v-if="isEdit" v-model="datas1.action[0]" filterable>
                                     <Option v-for="(item, key) in actionList" :value="key" :key="key">{{item}}</Option>
                                 </Select>
-                                <template v-else>{{actionList[datas1.action[index]]}}</template>
+                                <template v-else>{{actionList[datas1.action[0]]}}</template>
                             </td>
                             <td>
-                                <Input v-if="isEdit" v-model="datas1.method[index]"></Input>
-                                <template v-else>{{datas1.method[index]}}</template>
+                                <Input v-if="isEdit" v-model="datas1.method[0]"></Input>
+                                <template v-else>{{datas1.method[0]}}</template>
                             </td>
-                        </template>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="detail-table-2">
-            <div class="table-header">
-                <h1>表2：安全生产隐患及整改情况一览表</h1>
+                            <td :rowspan="rowSpan">
+                                <Input v-if="isEdit" v-model="datas1.dutyUnit"></Input>
+                                <template v-else>{{datas1.dutyUnit}}</template>
+                            </td>
+                            <td :rowspan="rowSpan">
+                                <Input v-if="isEdit" v-model="datas1.dutyPerson"></Input>
+                                <template v-else>{{datas1.dutyPerson}}</template>
+                            </td>
+                            <td :rowspan="rowSpan">
+                                <Date-picker type="date" v-if="isEdit" v-model="datas1.finishDate"></Date-picker>
+                                <template v-else>{{datas1.finishDate}}</template>
+                            </td>
+                            <td :rowspan="rowSpan">
+                                <Input v-if="isEdit" v-model="datas1.remark"></Input>
+                                <template v-else>{{datas1.remark}}</template>
+                            </td>
+                        </tr>
+                        <tr v-for="index in (rowSpan - 1)">
+                            <template v-if="isEdit && index == (rowSpan - 1)">
+                                <td colspan="2">
+                                    <Button type="primary" shape="circle" icon="plus" size="small" @click="insertLine()"></Button>
+                                </td>
+                            </template>
+                            <template v-else>
+                                <td>
+                                    <Select v-if="isEdit" v-model="datas1.action[index]" filterable>
+                                        <Option v-for="(item, key) in actionList" :value="key" :key="key">{{item}}</Option>
+                                    </Select>
+                                    <template v-else>{{actionList[datas1.action[index]]}}</template>
+                                </td>
+                                <td>
+                                    <Input v-if="isEdit" v-model="datas1.method[index]"></Input>
+                                    <template v-else>{{datas1.method[index]}}</template>
+                                </td>
+                            </template>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <Row class="table-pre">
-                <Col span="12" class="table-pre-left">
-                    <label>执法检查日期：</label>
-                    <Date-picker type="date" placeholder="选择日期" class="input-style" v-if="isEdit" v-model="checkDate"></Date-picker>
-                    <span v-else>{{checkDate}}</span>
-                </Col>
-                <Col span="12" class="table-pre-right">
-                    <label>执法检查人员：</label>
-                    <Input class="input-style" v-if="isEdit" v-model="checkPerson"></Input>
-                    <span v-else>{{checkPerson}}</span>
-                </Col>
-            </Row>
-            <table class="main-table">
-                <thead>
-                    <tr>
-                        <th v-for="item in columns2">{{item.title}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item, index) in datas2">
-                        <td>{{index + 1}}</td>
-                        <td>
-                        </td>
-                        <td>
-                            {{item['actionOrDesc']}}
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                            <Date-picker type="date" :open= v-if="isEdit" v-model="item['rectificateDate']" @on-ok="handleDate(index)"></Date-picker>
-                            <template v-else>{{item['rectificateDate']}}</template>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                            <Input v-if="isEdit" v-model="item['remark']"></Input>
-                            <template v-else>{{item['remark']}}</template>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="detail-table-2">
+                <div class="table-header">
+                    <h1>表2：安全生产隐患及整改情况一览表</h1>
+                </div>
+                <Row class="table-pre">
+                    <Col span="12" class="table-pre-left">
+                        <label>执法检查日期：</label>
+                        <span>{{datas1.checkDate}}</span>
+                    </Col>
+                    <Col span="12" class="table-pre-right">
+                        <label>执法检查人员：</label>
+                        <span>{{datas1.checkPerson}}</span>
+                    </Col>
+                </Row>
+                <table class="main-table">
+                    <thead>
+                        <tr>
+                            <th v-for="item in columns2">{{item.title}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in datas2">
+                            <td>{{index + 1}}</td>
+                            <td>
+                            </td>
+                            <td>
+                                {{item['actionOrDesc']}}
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                <Date-picker type="date" v-if="isEdit" v-model="item['rectificateDate']" @on-change="handleDate(index)"></Date-picker>
+                                <template v-else>{{item['rectificateDate']}}</template>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                <Input v-if="isEdit" v-model="item['remark']"></Input>
+                                <template v-else>{{item['remark']}}</template>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
@@ -142,10 +159,6 @@
         data() {
             return {
                 isEdit: false,
-                fillUnit: '马田中队',//填报单位
-                fillPerson: '蔡春婷',//填报人
-                checkDate: '2017-02-27',//执法检查日期
-                checkPerson: '蔡春婷',//执法检查人员
                 columns1: [{
                     title: '执法检查日期',
                     key: 'checkDate',
@@ -178,16 +191,20 @@
                     key: 'remark',
                 }],
                 datas1: {
-                    checkDate: '2017-02-21',
-                    companyName: '宝明发包装制品有限公司',
-                    companyAddress: '合水口社区第四工业区1期1栋3,4层',
-                    checkPerson: '林志松,王敏学',
-                    action: [],
-                    method: [],
-                    dutyUnit: '马田中队',
-                    dutyPerson: '麦柏基',
-                    finishDate: '2017-02-28',
-                    remark: ''
+                    isReviewed: false,
+                    isRecorded: false,
+                    fillUnit: '马田中队',//填报单位
+                    fillPerson: '蔡春婷',//填报人
+                    checkDate: '2017-02-21',//执法检查日期
+                    companyName: '宝明发包装制品有限公司',//执法检查（或复查）企业（场所）名称
+                    companyAddress: '合水口社区第四工业区1期1栋3,4层',//企业地址
+                    checkPerson: '林志松,王敏学',//执法检查人员
+                    action: [],//违法行为或隐患情况
+                    method: [],//整改落实情况或处置措施
+                    dutyUnit: '马田中队',//责任单位
+                    dutyPerson: '麦柏基',//责任人
+                    finishDate: '2017-02-28',//整改完成期限
+                    remark: '',//备注
                 },
                 columns2: [{
                     title: '序号',
@@ -308,7 +325,12 @@
                 this.datas1.action.push('');
             },
             handleDate(index) {
-                this.datas2[index].rectificateDate = moment(date).format('YYYY-MM-DD')
+                setTimeout(() => {
+                    this.datas2[index].rectificateDate = moment(this.datas2[index].rectificateDate).format('YYYY-MM-DD')
+                }, 200);
+            },
+            handleBack() {
+                this.$router.go(-1)
             }
         }
     }
@@ -324,44 +346,56 @@
             padding: 10px 0;
             text-align: right;
             border-bottom: $borderStyle;
-        }
-        .detail-table-2 {
-            margin-top: 40px;
-        }
-        .detail-table-1, .detail-table-2 {
-            .table-header {
-                text-align: center;
+            height: 50px;
+            .detail-header-left {
+                float: left;
             }
-            .table-pre {
-                margin: 10px 0;
-                .table-pre-left {
-                    text-align: left;
-                }
-                .table-pre-right {
-                    text-align: right;
-                }
-                .input-style {
-                    display: inline-block;
-                    width: 200px;
+            .detail-header-right {
+                float: right;
+            }
+        }
+        .detail-content {
+            margin: 40px 0;
+            .detail-check {
+                label:nth-child(3) {
+                    margin-left: 20px;
                 }
             }
-            .main-table {
-                width: 100%;
-                border: $borderStyle;
-                border-collapse: collapse;
-                th {
-                    padding: 10px;
-                    border: $borderStyle;
-                    background-color: #f5f7f9;
-                }
-                td {
-                    padding: 5px;
-                    border: $borderStyle;
+            .detail-table-1, .detail-table-2 {
+                margin-top: 20px;
+                .table-header {
                     text-align: center;
                 }
+                .table-pre {
+                    margin: 10px 0;
+                    .table-pre-left {
+                        text-align: left;
+                    }
+                    .table-pre-right {
+                        text-align: right;
+                    }
+                    .input-style {
+                        display: inline-block;
+                        width: 200px;
+                    }
+                }
+                .main-table {
+                    width: 100%;
+                    border: $borderStyle;
+                    border-collapse: collapse;
+                    th {
+                        padding: 10px;
+                        border: $borderStyle;
+                        background-color: #f5f7f9;
+                    }
+                    td {
+                        padding: 5px;
+                        border: $borderStyle;
+                        text-align: center;
+                    }
+                }
             }
         }
-        
     }
     
 </style>

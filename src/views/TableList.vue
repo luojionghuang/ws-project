@@ -22,7 +22,7 @@
                     key: 'time'
                 }, {
                     title: '公司',
-                    key: 'company'
+                    key: 'companyName'
                 }, {
                     title: '备注',
                     key: 'remark'
@@ -37,7 +37,7 @@
                 }],
                 datas: [{
                     time: '2017-01-01',
-                    company: '宝明发包装材料',
+                    companyName: '宝明发包装材料',
                     remark: '已复查'
                 }]
             }
