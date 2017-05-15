@@ -12,9 +12,9 @@
         <div class="detail-content">
             <div class="detail-check">
                 <label>是否复查：</label>
-                <i-switch v-model="isReviewed" :disabled="!isEdit"></i-switch>
+                <i-switch v-model="datas1.isReviewed" :disabled="!isEdit"></i-switch>
                 <label>是否立案：</label>
-                <i-switch v-model="isRecorded" :disabled="!isEdit"></i-switch>
+                <i-switch v-model="datas1.isRecorded" :disabled="!isEdit"></i-switch>
             </div>
             <div class="detail-table-1">
                 <div class="table-header">
@@ -134,6 +134,20 @@
                                 {{item['actionOrDesc']}}
                             </td>
                             <td>
+                                <div class="upload-img-list" v-for="img in fileList">
+                                    <img :src="img.url">
+                                    <div class="upload-list-cover">
+                                        <Icon type="ios-eye-outline"></Icon>
+                                        <Icon type="ios-trash-outline"></Icon>
+                                    </div>
+                                </div>
+                                <Upload multiple
+                                    ref="upload"
+                                    :format="['jpg','jpeg','png']"
+                                    :default-file-list="fileList"
+                                    action="//jsonplaceholder.typicode.com/posts/"
+                                    :show-upload-list="false"
+                                ></Upload>
                             </td>
                             <td>
                                 <Date-picker type="date" v-if="isEdit" v-model="item['rectificateDate']" @on-change="handleDate(index)"></Date-picker>
@@ -158,6 +172,13 @@
         name: 'DetailList',
         data() {
             return {
+                fileList: [{
+                    name: 'img1.jpg',
+                    url: 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar',
+                }, {
+                    name: 'img2.jpg',
+                    url: 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar',
+                }],
                 isEdit: false,
                 columns1: [{
                     title: '执法检查日期',
@@ -332,7 +353,7 @@
             handleBack() {
                 this.$router.go(-1)
             }
-        }
+        },
     }
 </script>
 
@@ -392,6 +413,33 @@
                         padding: 5px;
                         border: $borderStyle;
                         text-align: center;
+                        .upload-img-list {
+                            display: inline-block;
+                            width: 40px;
+                            height: 40px;
+                            text-align: center;
+                            line-height: 60px;
+                            border: 1px solid transparent;
+                            border-radius: 4px;
+                            overflow: hidden;
+                            background: #fff;
+                            position: relative;
+                            box-shadow: 0 1px 1px rgba(0,0,0,.2);
+                            margin-right: 4px;
+                            img {
+                                width: 100%;
+                                height: 100%;
+                            }
+                            .upload-list-cover{
+                                display: none;
+                                position: absolute;
+                                top: 0;
+                                bottom: 0;
+                                left: 0;
+                                right: 0;
+                                background: rgba(0,0,0,.6);
+                            }
+                        }
                     }
                 }
             }
