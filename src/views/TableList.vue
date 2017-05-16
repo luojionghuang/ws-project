@@ -30,7 +30,7 @@
                 columns: [{
                     type: 'selection',
                     width: 60,
-                    align: 'center'
+                    align: 'center',
                 }, {
                     title: '检测日期',
                     key: 'checkDate',
@@ -40,7 +40,7 @@
                     key: 'enterpriseName',
                     align: 'center',
                 }, {
-                    title: '是否复查',
+                    title: '复查状态',
                     key: 'isReviewed',
                     align: 'center',
                     render(h, {row, column, index}) {
@@ -54,7 +54,7 @@
                         }, text);
                     }
                 }, {
-                    title: '是否立案',
+                    title: '立案状态',
                     key: 'isRecorded',
                     align: 'center',
                     render(h, {row, column, index}) {

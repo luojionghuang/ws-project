@@ -41,7 +41,7 @@
                 <table class="main-table">
                     <thead>
                         <tr>
-                            <th v-for="item in columns1">{{item.title}}</th>
+                            <th v-for="item in columns1" :width="item.width">{{item.title}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -128,7 +128,7 @@
                 <table class="main-table">
                     <thead>
                         <tr>
-                            <th v-for="item in columns2">{{item.title}}</th>
+                            <th v-for="item in columns2" :width="item.width">{{item.title}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,20 +140,10 @@
                                 {{item['situation']}}
                             </td>
                             <td>
-                                <div class="upload-img-list" v-for="img in fileList">
-                                    <img :src="img.url">
-                                    <div class="upload-list-cover">
-                                        <Icon type="ios-eye-outline"></Icon>
-                                        <Icon type="ios-trash-outline"></Icon>
-                                    </div>
-                                </div>
-                                <Upload multiple
-                                    ref="upload"
-                                    :format="['jpg','jpeg','png']"
-                                    :default-file-list="fileList"
-                                    action="//jsonplaceholder.typicode.com/posts/"
-                                    :show-upload-list="false"
-                                ></Upload>
+                                <img-upload
+                                    :defaultList="defaultList"
+                                    action="xxxx">
+                                </img-upload>
                             </td>
                             <td>
                                 <Date-picker type="date" v-if="isEdit" v-model="item['rectificateDate']" @on-change="handleDate(index)"></Date-picker>
@@ -174,48 +164,65 @@
 </template>
 <script>
     import moment from 'moment'
+    import ImgUpload from '@/components/ImgUpload'
     export default {
         name: 'DetailList',
+        components: {
+            ImgUpload
+        },
         data() {
             return {
-                fileList: [{
-                    name: 'img1.jpg',
-                    url: 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar',
-                }, {
-                    name: 'img2.jpg',
-                    url: 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar',
-                }],
+                defaultList: [
+                    {
+                        'name': 'a42bdcc1178e62b4694c830f028db5c0',
+                        'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
+                    },
+                    {
+                        'name': 'bc7521e033abdd1e92222d733590f104',
+                        'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
+                    }
+                ],
                 isEdit: false,
                 columns1: [{
                     title: '执法检查日期',
                     key: 'checkDate',
+                    width: '8%',
                 }, {
                     title: '执法检查（或复查）企业（场所）名称',
                     key: 'enterpriseName',
+                    width: '15%',
                 }, {
                     title: '企业地址',
                     key: 'enterpriseAddress',
+                    width: '15%',
                 }, {
                     title: '执法检查人员',
                     key: 'checkPerson',
+                    width: '8%',
                 }, {
                     title: '违法行为或隐患情况',
                     key: 'situation',
+                    width: '15%',
                 }, {
                     title: '整改落实情况或处置措施',
                     key: 'method',
+                    width: '8%',
                 }, {
                     title: '责任单位',
                     key: 'dutyUnit',
+                    width: '8%',
                 }, {
                     title: '责任人',
                     key: 'dutyPerson',
+                    width: '8%',
                 }, {
                     title: '整改完成期限',
                     key: 'finishDate',
+                    width: '8%',
                 }, {
                     title: '备注',
                     key: 'remark',
+                    width: '7%',
                 }],
                 datas1: {
                     isReviewed: false,
@@ -235,25 +242,32 @@
                 },
                 columns2: [{
                     title: '序号',
-                    key: 'no'
+                    key: 'no',
+                    width: '5%',
                 }, {
                     title: '违法行为或隐患所在部位',
-                    key: 'part'
+                    key: 'part',
+                    width: '15%',
                 }, {
                     title: '违法行为或隐患描述',
-                    key: 'situation'
+                    key: 'situation',
+                    width: '15%',
                 }, {
                     title: '整改前照片',
-                    key: 'beforeImg'
+                    key: 'beforeImg',
+                    width: '20%',
                 }, {
                     title: '整改期限',
-                    key: 'rectificateDate'
+                    key: 'rectificateDate',
+                    width: '10%',
                 }, {
                     title: '整改后照片',
-                    key: 'afterImg'
+                    key: 'afterImg',
+                    width: '20%',
                 }, {
                     title: '备注',
-                    key: 'remark'
+                    key: 'remark',
+                    width: '15%',
                 }],
                 datas2: [],
                 situationList: {
@@ -358,7 +372,7 @@
             },
             handleBack() {
                 this.$router.go(-1)
-            }
+            },
         },
     }
 </script>
@@ -419,33 +433,6 @@
                         padding: 5px;
                         border: $borderStyle;
                         text-align: center;
-                        .upload-img-list {
-                            display: inline-block;
-                            width: 40px;
-                            height: 40px;
-                            text-align: center;
-                            line-height: 60px;
-                            border: 1px solid transparent;
-                            border-radius: 4px;
-                            overflow: hidden;
-                            background: #fff;
-                            position: relative;
-                            box-shadow: 0 1px 1px rgba(0,0,0,.2);
-                            margin-right: 4px;
-                            img {
-                                width: 100%;
-                                height: 100%;
-                            }
-                            .upload-list-cover{
-                                display: none;
-                                position: absolute;
-                                top: 0;
-                                bottom: 0;
-                                left: 0;
-                                right: 0;
-                                background: rgba(0,0,0,.6);
-                            }
-                        }
                     }
                 }
             }
