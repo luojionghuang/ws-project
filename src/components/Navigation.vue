@@ -1,16 +1,35 @@
 <template>
     <div>
         <Menu mode="horizontal" theme="primary" active-name="1">
-            <Menu-item name="1">
+            <Menu-item name="0">
                 <Icon type="ios-paper"></Icon>
-                内容管理
+                企业安全生产管理平台
             </Menu-item>
-            <Menu-item name="2">
-                <Icon type="ios-people"></Icon>
-                用户管理
-            </Menu-item>
+            <router-link to="table">
+                <Menu-item name="1">
+                    <Icon type="ios-paper"></Icon>
+                    台账
+                </Menu-item>
+            </router-link>
+            <router-link to="enterprise">
+                <Menu-item name="2">
+                    <Icon type="ios-people"></Icon>
+                    企业管理
+                </Menu-item>
+            </router-link>
+            <Submenu name="3">
+                <template slot="title">
+                    <Icon type="ios-people"></Icon>
+                    数据管理
+                </template>
+                <Menu-group title="维护">
+                    <router-link to="situation"><Menu-item name="3-1">违法行为</Menu-item></router-link>
+                </Menu-group>
+            </Submenu>
         </Menu>
-        <router-view></router-view>
+        <div class="content-wrapper">
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
@@ -23,4 +42,8 @@
 </script>
 
 <style lant="scss" scoped>
+    .content-wrapper {
+        width: 80%;
+        margin: 10px auto;
+    }
 </style>

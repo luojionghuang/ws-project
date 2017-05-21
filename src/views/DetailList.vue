@@ -1,15 +1,15 @@
 <template>
-    <div class="detail-wrapper">
-        <div class="detail-header">
-            <div class="detail-header-left">
+    <div class="ws-wrapper">
+        <div class="ws-header">
+            <div class="ws-header-left">
                 <Button type="primary" icon="arrow-return-left" @click="handleBack">返回</Button>
             </div>
-            <div class="detail-header-right">
+            <div class="ws-header-right">
                 <Button v-if="!isEdit" type="primary" icon="document">导出Word</Button>
                 <Button :type="isEdit ? 'success' : 'primary'" :icon="isEdit ? 'checkmark' : 'edit'" @click="toggleEditStatus">{{isEdit ? '保存' : '编辑'}}</Button>
             </div>
         </div>
-        <div class="detail-content">
+        <div class="ws-content">
             <div class="detail-check">
                 <label>是否复查：</label>
                 <i-switch v-model="datas1.isReviewed" :disabled="!isEdit">
@@ -379,24 +379,8 @@
 
 <style lang="scss" scoped>
     $borderStyle: 1px solid #e3e8ee;
-    .detail-wrapper {
-        width: 80%;
-        margin: 0 auto;
-        .detail-header {
-            margin: 10px 0;
-            padding: 10px 0;
-            text-align: right;
-            border-bottom: $borderStyle;
-            height: 50px;
-            .detail-header-left {
-                float: left;
-            }
-            .detail-header-right {
-                float: right;
-            }
-        }
-        .detail-content {
-            margin: 40px 0;
+    .ws-wrapper {
+        .ws-content {
             .detail-check {
                 label:nth-child(3) {
                     margin-left: 20px;

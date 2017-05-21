@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.16.1",
     "iview": "^2.0.0-rc.13",
     "moment": "^2.18.1",
     "vue": "^2.2.6",

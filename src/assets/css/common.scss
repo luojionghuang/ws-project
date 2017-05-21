@@ -1,0 +1,18 @@
+.ws-wrapper {
+    .ws-header {
+        margin: 10px 0;
+        padding: 10px 0;
+        text-align: right;
+        border-bottom: 1px solid #e3e8ee;
+        height: 50px;
+        .ws-header-left {
+            float: left;
+        }
+        .ws-header-right {
+            float: right;
+        }
+    }
+    .ws-content {
+        margin: 40px 0;
+    }
+}

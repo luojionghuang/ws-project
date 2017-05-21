@@ -1,21 +1,39 @@
 <template>
-    <div class="list-wrapper">
-        <div class="search-list">
-            <Row :gutter="16">
-                <Col span="6">
-                    <label>检测日期</label>
-                    <Date-picker type="date" v-model="sCheckDate"></Date-picker>
-                </Col>
-                <Col span="6">
-                    <label>公司名称</label>
-                    <Input v-model="sEnterpriseName"></Input>
-                </Col>
-            </Row>
+    <div class="ws-wrapper">
+        <div class="ws-header">
+            <div class="ws-header-left">
+                <h1>台账</h1>
+            </div>
+            <div class="ws-header-right">
+                <Button type="primary" icon="plus" @click="newModel = true">创建</Button>
+                <Modal
+                    v-model="newModel"
+                    title="整治添加">
+                    <p>呵呵</p>
+                    <div slot="footer">
+                        <Button type="primary" @click="saveModel">保存</Button>
+                    </div>
+                </Modal>
+            </div>
         </div>
-        <Table :columns="columns" :data="datas"></Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="100" :current="1"></Page>
+        <div class="ws-content">
+            <div class="search-list">
+                <Row :gutter="16">
+                    <Col span="6">
+                        <label>检测日期</label>
+                        <Date-picker type="date" v-model="sCheckDate"></Date-picker>
+                    </Col>
+                    <Col span="6">
+                        <label>公司名称</label>
+                        <Input v-model="sEnterpriseName"></Input>
+                    </Col>
+                </Row>
+            </div>
+            <Table :columns="columns" :data="datas"></Table>
+            <div style="margin: 10px;overflow: hidden">
+                <div style="float: right;">
+                    <Page :total="100" :current="1"></Page>
+                </div>
             </div>
         </div>
     </div>
@@ -25,6 +43,7 @@
     export default {
         data() {
             return {
+                newModel: false,
                 sCheckDate: '',
                 sEnterpriseName: '',
                 columns: [{
@@ -98,15 +117,16 @@
         methods: {
             detail() {
                 this.$router.push({name: 'detail'});
+            },
+            saveModel() {
+
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .list-wrapper {
-        width: 80%;
-        margin: 10px auto;
+    .ws-wrapper {
         .search-list {
             margin: 20px 0;
         }
