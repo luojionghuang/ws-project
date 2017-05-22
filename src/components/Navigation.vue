@@ -5,7 +5,7 @@
                 <Icon type="ios-paper"></Icon>
                 企业安全生产管理平台
             </Menu-item>
-            <router-link to="table">
+            <router-link to="rectificationTable">
                 <Menu-item name="1">
                     <Icon type="ios-paper"></Icon>
                     台账

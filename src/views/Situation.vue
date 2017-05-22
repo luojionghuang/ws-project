@@ -27,7 +27,7 @@
             }
         },
         mounted() {
-            loadSituations(1).then(resp => {
+            loadSituations().then(resp => {
                 this.datas = resp.data;
             })
         }

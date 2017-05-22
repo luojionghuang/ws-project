@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Navigation from '@/components/Navigation'
-import TableList from '@/views/TableList'
-import DetailList from '@/views/DetailList'
+import RectificationTable from '@/views/RectificationTable'
+import RectificationDetail from '@/views/RectificationDetail'
 import Enterprise from '@/views/Enterprise'
 import Situation from '@/views/Situation'
 
@@ -14,15 +14,15 @@ export default new VueRouter({
         component: Navigation,
         children: [{
             path: '',
-            redirect: '/table',
+            redirect: '/rectificationTable',
         }, {
-            path: 'table',
-            name: 'table',
-            component: TableList,
+            path: 'rectificationTable',
+            name: 'rectificationTable',
+            component: RectificationTable,
         }, {
-            path: 'detail',
-            name: 'detail',
-            component: DetailList,
+            path: 'rectificationDetail',
+            name: 'rectificationDetail',
+            component: RectificationDetail,
         }, {
             path: 'enterprise',
             name: 'enterprise',
