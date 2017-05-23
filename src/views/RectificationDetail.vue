@@ -166,7 +166,6 @@
     import moment from 'moment'
     import ImgUpload from '@/components/ImgUpload'
     export default {
-        name: 'DetailList',
         components: {
             ImgUpload
         },

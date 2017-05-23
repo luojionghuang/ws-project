@@ -40,6 +40,7 @@
 </template>
 
 <script>
+    import { loadRectificationMains } from '@/services/rectification.js'
     export default {
         data() {
             return {
@@ -53,18 +54,18 @@
                 }, {
                     title: '检测日期',
                     key: 'checkDate',
-                    align: 'center',
+                    align: 'center'
                 }, {
                     title: '公司',
                     key: 'enterpriseName',
                     align: 'center',
                 }, {
                     title: '复查状态',
-                    key: 'isReviewed',
+                    key: 'reviewed',
                     align: 'center',
                     render(h, {row, column, index}) {
-                        let color = row.isReviewed ? 'green' : 'red';
-                        let text = row.isReviewed ? '已复查' : '未复查';
+                        let color = row.reviewed ? 'green' : 'red';
+                        let text = row.reviewed ? '已复查' : '未复查';
                         return h('Tag', {
                             props: {
                                 type: 'dot',
@@ -74,11 +75,11 @@
                     }
                 }, {
                     title: '立案状态',
-                    key: 'isRecorded',
+                    key: 'recorded',
                     align: 'center',
                     render(h, {row, column, index}) {
-                        let color = row.isRecorded ? 'green' : 'red';
-                        let text = row.isRecorded ? '已立案' : '未立案';
+                        let color = row.recorded ? 'green' : 'red';
+                        let text = row.recorded ? '已立案' : '未立案';
                         return h('Tag', {
                             props: {
                                 type: 'dot',
@@ -99,19 +100,7 @@
                                 <i-button type="error" size="small">删除</i-button>`
                     }
                 }],
-                datas: [{
-                    checkDate: '2017-01-01',
-                    enterpriseName: '宝明发包装材料',
-                    isReviewed: true,
-                    isRecorded: false,
-                    remark: '无备注'
-                }, {
-                    checkDate: '2017-01-01',
-                    enterpriseName: '宝明发包装材料',
-                    isReviewed: true,
-                    isRecorded: false,
-                    remark: '无备注'
-                }]
+                datas: []
             }
         },
         methods: {
@@ -121,6 +110,11 @@
             saveModel() {
 
             }
+        },
+        mounted() {
+            loadRectificationMains(1).then(resp => {
+                this.datas = resp.data
+            });
         }
     }
 </script>

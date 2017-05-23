@@ -4,36 +4,47 @@ import fetch from '@/conf/fetch'
  * 分页加载整治列表
  * @param {Number} curPage 
  */
-const loadRectifications = (curPage) => fetch('http://127.0.0.1:9000/wsproject/rectification/loadRectifications', {
+const loadRectificationMains = (curPage) => fetch('http://127.0.0.1:9000/wsproject/rectification/loadRectificationMains', {
     curPage,
+})
+
+const loadRectificationMain = (rectificationMainId) => fetch('http://127.0.0.1:9000/wsproject/rectification/loadRectificationMain', {
+    rectificationMainId,
 })
 
 /**
  * 初始化整治信息
- * @param {Object} rectification 
+ * @param {Object} rectificationMain 
  */
-const initRectification = (rectification) => fetch('http://127.0.0.1:9000/wsproject/rectification/initRectification', {
-    checkDate: rectification.checkDate,
-    enterpriseId: rectification.enterpriseId,
+const initRectificationMain = (rectificationMain) => fetch('http://127.0.0.1:9000/wsproject/rectification/initRectificationMain', {
+    checkDate: rectificationMain.checkDate,
+    enterpriseId: rectificationMain.enterpriseId,
 })
 
 /**
  * 修改整治信息
- * @param {Object} rectification 
+ * @param {*} enterpriseId 
+ * @param {Object} rectificationMain 
  */
-const modifyRectification = (rectification) => fetch('http://127.0.0.1:9000/wsproject/rectification/modifyRectification', {
-    checkDate: rectification.checkDate,
-    checkPerson: rectification.checkPerson,
-    situation: rectification.situation,
-    method: rectification.method,
-    dutyUnit: rectification.dutyUnit,
-    dutyPerson: rectification.dutyPerson,
-    finishDate: rectification.finishDate,
-    remark: rectification.remark,
+const modifyRectificationMain = (enterpriseId, rectificationMain) => fetch('http://127.0.0.1:9000/wsproject/rectification/modifyRectificationMain', {
+    enterpriseId,
+    fillUnit: rectificationMain.fillUnit,
+    fillPerson: rectificationMain.fillPerson,
+    checkDate: rectificationMain.checkDate,
+    checkPerson: rectificationMain.checkPerson,
+    situation: rectificationMain.situation.join(','),
+    method: rectificationMain.method.join(','),
+    dutyUnit: rectificationMain.dutyUnit,
+    dutyPerson: rectificationMain.dutyPerson,
+    finishDate: rectificationMain.finishDate,
+    remark: rectificationMain.remark,
+    isRecorded: rectificationMain.isRecorded,
+    isReviewed: rectificationMain.isReviewed,
 })
 
 export {
-    loadRectifications,
-    insertRectification,
-    modifyRectification,
+    loadRectificationMains,
+    loadRectificationMain,
+    initRectificationMain,
+    modifyRectificationMain,
 }
