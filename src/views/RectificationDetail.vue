@@ -224,22 +224,23 @@
                     key: 'remark',
                     width: '7%',
                 }],
-                datas1: {
-                    reviewed: false,
-                    recorded: false,
-                    fillUnit: '马田中队',//填报单位
-                    fillPerson: '蔡春婷',//填报人
-                    checkDate: '2017-02-21',//执法检查日期
-                    enterpriseName: '宝明发包装制品有限公司',//执法检查（或复查）企业（场所）名称
-                    enterpriseAddress: '合水口社区第四工业区1期1栋3,4层',//企业地址
-                    checkPerson: '林志松,王敏学',//执法检查人员
-                    situation: [],//违法行为或隐患情况
-                    method: [],//整改落实情况或处置措施
-                    dutyUnit: '马田中队',//责任单位
-                    dutyPerson: '麦柏基',//责任人
-                    finishDate: '2017-02-28',//整改完成期限
-                    remark: '',//备注
-                },
+                // datas1: {
+                //     reviewed: false,
+                //     recorded: false,
+                //     fillUnit: '马田中队',//填报单位
+                //     fillPerson: '蔡春婷',//填报人
+                //     checkDate: '2017-02-21',//执法检查日期
+                //     enterpriseName: '宝明发包装制品有限公司',//执法检查（或复查）企业（场所）名称
+                //     enterpriseAddress: '合水口社区第四工业区1期1栋3,4层',//企业地址
+                //     checkPerson: '林志松,王敏学',//执法检查人员
+                //     situation: [],//违法行为或隐患情况
+                //     method: [],//整改落实情况或处置措施
+                //     dutyUnit: '马田中队',//责任单位
+                //     dutyPerson: '麦柏基',//责任人
+                //     finishDate: '2017-02-28',//整改完成期限
+                //     remark: '',//备注
+                // },
+                datas1: null,
                 columns2: [{
                     title: '序号',
                     key: 'no',
