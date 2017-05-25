@@ -8,9 +8,7 @@ const loadRectificationMains = (curPage) => fetch('http://127.0.0.1:9000/wsproje
     curPage,
 })
 
-const loadRectificationMain = (rectificationMainId) => fetch('http://127.0.0.1:9000/wsproject/rectification/loadRectificationMain', {
-    rectificationMainId,
-})
+const loadRectification = (rectificationMainId) => fetch('http://127.0.0.1:9000/wsproject/rectification/loadRectification/' + rectificationMainId, {})
 
 /**
  * 初始化整治信息
@@ -44,7 +42,7 @@ const modifyRectificationMain = (enterpriseId, rectificationMain) => fetch('http
 
 export {
     loadRectificationMains,
-    loadRectificationMain,
+    loadRectification,
     initRectificationMain,
     modifyRectificationMain,
 }

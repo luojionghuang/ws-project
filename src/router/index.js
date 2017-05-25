@@ -20,7 +20,7 @@ export default new VueRouter({
             name: 'rectificationTable',
             component: RectificationTable,
         }, {
-            path: 'rectificationDetail',
+            path: 'rectificationDetail/:id',
             name: 'rectificationDetail',
             component: RectificationDetail,
         }, {

@@ -69,7 +69,7 @@
                         return h('Tag', {
                             props: {
                                 type: 'dot',
-                                color: color
+                                color: color,
                             }
                         }, text);
                     }
@@ -83,7 +83,7 @@
                         return h('Tag', {
                             props: {
                                 type: 'dot',
-                                color: color
+                                color: color,
                             }
                         }, text);
                     }
@@ -94,19 +94,41 @@
                 }, {
                     title: '操作',
                     key: 'control',
-                    align: 'action',
-                    render(h, params) {
-                        return `<i-button type="primary" size="small" @click="detail()">查看</i-button>
-                                <i-button type="error" size="small">删除</i-button>`
+                    align: 'center',
+                    render: (h, {row, column, index}) => {
+                        return h('div', [
+                            h('Button', {
+                                props: {
+                                    type: 'primary',
+                                    size: 'small',
+                                },
+                                style: {
+                                    marginRight: '5px',
+                                },
+                                on: {
+                                    click: () => {
+                                        this.$router.push({name: 'rectificationDetail', params: {id: row.id}})
+                                    }
+                                }
+                            }, '查看'),
+                            h('Button', {
+                                props: {
+                                    type: 'error',
+                                    size: 'small',
+                                },
+                                on: {
+                                    click: () => {
+                                         console.log('是否要删除？');
+                                    }
+                                }
+                            }, '删除')
+                        ])
                     }
                 }],
                 datas: []
             }
         },
         methods: {
-            detail() {
-                this.$router.push({name: 'rectificationDetail'});
-            },
             saveModel() {
 
             }

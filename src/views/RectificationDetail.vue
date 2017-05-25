@@ -12,12 +12,12 @@
         <div class="ws-content">
             <div class="detail-check">
                 <label>是否复查：</label>
-                <i-switch v-model="datas1.isReviewed" :disabled="!isEdit">
+                <i-switch v-model="datas1.reviewed" :disabled="!isEdit">
                     <span slot="open">是</span>
                     <span slot="close">否</span>
                 </i-switch>
                 <label>是否立案：</label>
-                <i-switch v-model="datas1.isRecorded" :disabled="!isEdit">
+                <i-switch v-model="datas1.recorded" :disabled="!isEdit">
                     <span slot="open">是</span>
                     <span slot="close">否</span>
                 </i-switch>
@@ -165,6 +165,7 @@
 <script>
     import moment from 'moment'
     import ImgUpload from '@/components/ImgUpload'
+    import { loadRectification } from '@/services/rectification'
     export default {
         components: {
             ImgUpload
@@ -224,8 +225,8 @@
                     width: '7%',
                 }],
                 datas1: {
-                    isReviewed: false,
-                    isRecorded: false,
+                    reviewed: false,
+                    recorded: false,
                     fillUnit: '马田中队',//填报单位
                     fillPerson: '蔡春婷',//填报人
                     checkDate: '2017-02-21',//执法检查日期
@@ -283,13 +284,20 @@
         computed: {
             rowSpan() {
                 let max = 0;
-                if(this.datas1) {
-                    let situationLength = this.datas1.situation.length;
-                    let methodLength = this.datas1.method.length;
-                    max = situationLength > methodLength ? situationLength : methodLength;
-                    if(max == 0) {
-                        max = 1;
-                    }
+                if(!this.datas1) {
+                    this.datas1 = []
+                }
+                if(!this.datas1.situation) {
+                    this.datas1 = Object.assign({}, this.datas1, {situation: []})
+                }
+                if(!this.datas1.method) {
+                    this.datas1 = Object.assign({}, this.datas1, {method: []})
+                }
+                let situationLength = this.datas1.situation.length;
+                let methodLength = this.datas1.method.length;
+                max = situationLength > methodLength ? situationLength : methodLength;
+                if(max == 0) {
+                    max = 1;
                 }
                 if(this.isEdit) {
                     max++;
@@ -298,32 +306,35 @@
             }
         },
         watch: {
-            checkDate() {
-                this.checkDate = moment(this.checkDate).format('YYYY-MM-DD');
-            },
             'datas1.checkDate': function() {
-                this.datas1.checkDate = moment(this.datas1.checkDate).format('YYYY-MM-DD');
+                if(this.datas1 && this.datas1.checkDate) {
+                    this.datas1.checkDate = moment(this.datas1.checkDate).format('YYYY-MM-DD')
+                }
             },
             'datas1.finishDate': function() {
-                this.datas1.finishDate = moment(this.datas1.finishDate).format('YYYY-MM-DD');
+                if(this.datas1 && this.datas1.finishDate) {
+                    this.datas1.finishDate = moment(this.datas1.finishDate).format('YYYY-MM-DD')
+                }
             },
             'datas1.situation': function() {
-                this.datas1.situation.forEach((item, index) => {
-                    if(this.datas2[index]) {
-                        if(this.datas2[index].situation != this.situationList[item]) {
-                            this.datas2[index].situation = this.situationList[item];
+                if(this.datas1 && this.datas1.situation) {
+                    this.datas1.situation.forEach((item, index) => {
+                        if(this.datas2[index]) {
+                            if(this.datas2[index].situation != this.situationList[item]) {
+                                this.datas2[index].situation = this.situationList[item];
+                            }
+                        } else {
+                            this.datas2.push({
+                                part: null,
+                                situation: this.situationList[item],
+                                beforeImg: null,
+                                rectificateDate: null,
+                                afterImg: null,
+                                remark: null
+                            });
                         }
-                    } else {
-                        this.datas2.push({
-                            part: null,
-                            situation: this.situationList[item],
-                            beforeImg: null,
-                            rectificateDate: null,
-                            afterImg: null,
-                            remark: null
-                        });
-                    }
-                });
+                    });
+                }
             }
         },
         methods: {
@@ -354,13 +365,20 @@
             },
             insertLine() {
                 let max = 0;
-                if(this.datas1) {
-                    let situationLength = this.datas1.situation.length;
-                    let methodLength = this.datas1.method.length;
-                    max = situationLength > methodLength ? situationLength : methodLength;
-                    if(max == 0) {
-                        this.datas1.situation.push('');
-                    }
+                if(!this.datas1) {
+                    this.datas1 = []
+                }
+                if(!this.datas1.situation) {
+                    this.datas1 = Object.assign({}, this.datas1, {situation: []})
+                }
+                if(!this.datas1.method) {
+                    this.datas1 = Object.assign({}, this.datas1, {method: []})
+                }
+                let situationLength = this.datas1.situation.length;
+                let methodLength = this.datas1.method.length;
+                max = situationLength > methodLength ? situationLength : methodLength;
+                if(max == 0) {
+                    this.datas1.situation.push('');
                 }
                 this.datas1.situation.push('');
             },
@@ -373,6 +391,19 @@
                 this.$router.go(-1)
             },
         },
+        mounted() {
+            loadRectification(this.$route.params.id).then(resp => {
+                let respData = resp.data
+                if(respData.status) {
+                    let data = respData.data
+                    if(data) {
+                        data.reviewed = data.reviewed == 1 ? true : false
+                        data.recorded = data.recorded == 1 ? true : false
+                    }
+                    this.datas1 = resp.data.data
+                }
+            })
+        }
     }
 </script>
 
