@@ -240,7 +240,7 @@
                 //     finishDate: '2017-02-28',//整改完成期限
                 //     remark: '',//备注
                 // },
-                datas1: null,
+                datas1: {},
                 columns2: [{
                     title: '序号',
                     key: 'no',
@@ -401,7 +401,7 @@
                         data.reviewed = data.reviewed == 1 ? true : false
                         data.recorded = data.recorded == 1 ? true : false
                     }
-                    this.datas1 = resp.data.data
+                    this.datas1 = data
                 }
             })
         }
