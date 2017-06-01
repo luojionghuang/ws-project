@@ -1,4 +1,5 @@
 import fetch from '@/conf/fetch'
+import qs from 'qs'
 
 /**
  * 分页加载整治列表
@@ -12,11 +13,10 @@ const loadRectification = (rectificationMainId) => fetch('http://127.0.0.1:9000/
 
 /**
  * 初始化整治信息
- * @param {Object} rectificationMain 
+ * @param {Object} rectification 
  */
-const initRectificationMain = (rectificationMain) => fetch('http://127.0.0.1:9000/wsproject/rectification/initRectificationMain', {
-    checkDate: rectificationMain.checkDate,
-    enterpriseId: rectificationMain.enterpriseId,
+const recordRectification = (rectification) => fetch('http://127.0.0.1:9000/wsproject/rectification/recordRectification', {
+    rectification
 })
 
 /**
@@ -43,6 +43,6 @@ const modifyRectificationMain = (enterpriseId, rectificationMain) => fetch('http
 export {
     loadRectificationMains,
     loadRectification,
-    initRectificationMain,
+    recordRectification,
     modifyRectificationMain,
 }

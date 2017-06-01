@@ -12,12 +12,12 @@
         <div class="ws-content">
             <div class="detail-check">
                 <label>是否复查：</label>
-                <i-switch v-model="datas1.reviewed" :disabled="!isEdit">
+                <i-switch v-model="datas.reviewed" :disabled="!isEdit">
                     <span slot="open">是</span>
                     <span slot="close">否</span>
                 </i-switch>
                 <label>是否立案：</label>
-                <i-switch v-model="datas1.recorded" :disabled="!isEdit">
+                <i-switch v-model="datas.recorded" :disabled="!isEdit">
                     <span slot="open">是</span>
                     <span slot="close">否</span>
                 </i-switch>
@@ -29,13 +29,13 @@
                 <Row class="table-pre">
                     <Col span="12" class="table-pre-left">
                         <label>填报单位：</label>
-                        <Input class="input-style" v-if="isEdit" v-model="datas1.fillUnit"></Input>
-                        <span v-else>{{datas1.fillUnit}}</span>
+                        <Input class="input-style" v-if="isEdit" v-model="datas.fillUnit"></Input>
+                        <span v-else>{{datas.fillUnit}}</span>
                     </Col>
                     <Col span="12" class="table-pre-right">
                         <label>填报人：</label>
-                        <Input class="input-style" v-if="isEdit" v-model="datas1.fillPerson"></Input>
-                        <span v-else>{{datas1.fillPerson}}</span>
+                        <Input class="input-style" v-if="isEdit" v-model="datas.fillPerson"></Input>
+                        <span v-else>{{datas.fillPerson}}</span>
                     </Col>
                 </Row>
                 <table class="main-table">
@@ -47,46 +47,46 @@
                     <tbody>
                         <tr>
                             <td :rowspan="rowSpan">
-                                <Date-picker type="date" v-if="isEdit" v-model="datas1.checkDate"></Date-picker>
-                                <span v-else>{{datas1.checkDate}}</span>
+                                <Date-picker type="date" v-if="isEdit" v-model="datas.checkDate"></Date-picker>
+                                <span v-else>{{datas.checkDate}}</span>
                             </td>
                             <td :rowspan="rowSpan">
-                                <Input v-if="isEdit" v-model="datas1.enterpriseName"></Input>
-                                <span v-else>{{datas1.enterpriseName}}</span>
+                                <Input v-if="isEdit" v-model="datas.enterpriseName"></Input>
+                                <span v-else>{{datas.enterpriseName}}</span>
                             </td>
                             <td :rowspan="rowSpan">
-                                <Input v-if="isEdit" v-model="datas1.enterpriseAddress"></Input>
-                                <template v-else>{{datas1.enterpriseAddress}}</template>
+                                <Input v-if="isEdit" v-model="datas.enterpriseAddress"></Input>
+                                <template v-else>{{datas.enterpriseAddress}}</template>
                             </td>
                             <td :rowspan="rowSpan">
-                                <Input v-if="isEdit" v-model="datas1.checkPerson"></Input>
-                                <template v-else>{{datas1.checkPerson}}</template>
+                                <Input v-if="isEdit" v-model="datas.checkPerson"></Input>
+                                <template v-else>{{datas.checkPerson}}</template>
                             </td>
                             <td>
-                                <Select v-if="isEdit" v-model="datas1.links[0].situationId" filterable>
+                                <Select v-if="isEdit" v-model="datas.links[0].situationId" filterable>
                                     <Option v-for="(item, key) in situationList" :value="key" :key="key">{{item}}</Option>
                                 </Select>
-                                <template v-else>{{situationList[datas1.links[0].situationId]}}</template>
+                                <template v-else>{{situationList[datas.links[0].situationId]}}</template>
                             </td>
                             <td>
-                                <Input v-if="isEdit" v-model="datas1.links[0].method"></Input>
-                                <template v-else>{{datas1.links[0].method}}</template>
+                                <Input v-if="isEdit" v-model="datas.links[0].method"></Input>
+                                <template v-else>{{datas.links[0].method}}</template>
                             </td>
                             <td :rowspan="rowSpan">
-                                <Input v-if="isEdit" v-model="datas1.dutyUnit"></Input>
-                                <template v-else>{{datas1.dutyUnit}}</template>
+                                <Input v-if="isEdit" v-model="datas.dutyUnit"></Input>
+                                <template v-else>{{datas.dutyUnit}}</template>
                             </td>
                             <td :rowspan="rowSpan">
-                                <Input v-if="isEdit" v-model="datas1.dutyPerson"></Input>
-                                <template v-else>{{datas1.dutyPerson}}</template>
+                                <Input v-if="isEdit" v-model="datas.dutyPerson"></Input>
+                                <template v-else>{{datas.dutyPerson}}</template>
                             </td>
                             <td :rowspan="rowSpan">
-                                <Date-picker type="date" v-if="isEdit" v-model="datas1.finishDate"></Date-picker>
-                                <template v-else>{{datas1.finishDate}}</template>
+                                <Date-picker type="date" v-if="isEdit" v-model="datas.finishDate"></Date-picker>
+                                <template v-else>{{datas.finishDate}}</template>
                             </td>
                             <td :rowspan="rowSpan">
-                                <Input v-if="isEdit" v-model="datas1.remark"></Input>
-                                <template v-else>{{datas1.remark}}</template>
+                                <Input v-if="isEdit" v-model="datas.remark"></Input>
+                                <template v-else>{{datas.remark}}</template>
                             </td>
                         </tr>
                         <tr v-for="index in (rowSpan - 1)">
@@ -97,14 +97,14 @@
                             </template>
                             <template v-else>
                                 <td>
-                                    <Select v-if="isEdit" v-model="datas1.links[index].situationId" filterable>
+                                    <Select v-if="isEdit" v-model="datas.links[index].situationId" filterable>
                                         <Option v-for="(item, key) in situationList" :value="key" :key="key">{{item}}</Option>
                                     </Select>
-                                    <template v-else>{{situationList[datas1.links[index].situationId]}}</template>
+                                    <template v-else>{{situationList[datas.links[index].situationId]}}</template>
                                 </td>
                                 <td>
-                                    <Input v-if="isEdit" v-model="datas1.links[index].method"></Input>
-                                    <template v-else>{{datas1.links[index].method}}</template>
+                                    <Input v-if="isEdit" v-model="datas.links[index].method"></Input>
+                                    <template v-else>{{datas.links[index].method}}</template>
                                 </td>
                             </template>
                         </tr>
@@ -118,11 +118,11 @@
                 <Row class="table-pre">
                     <Col span="12" class="table-pre-left">
                         <label>执法检查日期：</label>
-                        <span>{{datas1.checkDate}}</span>
+                        <span>{{datas.checkDate}}</span>
                     </Col>
                     <Col span="12" class="table-pre-right">
                         <label>执法检查人员：</label>
-                        <span>{{datas1.checkPerson}}</span>
+                        <span>{{datas.checkPerson}}</span>
                     </Col>
                 </Row>
                 <table class="main-table">
@@ -132,7 +132,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in datas1.links">
+                        <tr v-for="(item, index) in datas.links">
                             <td>{{index + 1}}</td>
                             <td>
                             </td>
@@ -165,7 +165,29 @@
 <script>
     import moment from 'moment'
     import ImgUpload from '@/components/ImgUpload'
-    import { loadRectification } from '@/services/rectification'
+    import { loadRectification, recordRectification } from '@/services/rectification'
+    const standardDetail = {
+                    reviewed: false,
+                    recorded: false,
+                    fillUnit: '',//填报单位
+                    fillPerson: '',//填报人
+                    checkDate: '',//执法检查日期
+                    enterpriseName: '',//执法检查（或复查）企业（场所）名称
+                    enterpriseAddress: '',//企业地址
+                    checkPerson: '',//执法检查人员
+                    dutyUnit: '',//责任单位
+                    dutyPerson: '',//责任人
+                    finishDate: '',//整改完成期限
+                    remark: '',//备注
+                    links: [{
+                        id: '',
+                        situationId: '',
+                        method: '',
+                        part: '',
+                        rectificateDate: '',
+                        remark: '',
+                    }]
+                }
     export default {
         components: {
             ImgUpload
@@ -224,52 +246,7 @@
                     key: 'remark',
                     width: '7%',
                 }],
-                datas1: {
-                    reviewed: false,
-                    recorded: false,
-                    fillUnit: '马田中队',//填报单位
-                    fillPerson: '蔡春婷',//填报人
-                    checkDate: '2017-02-21',//执法检查日期
-                    enterpriseName: '宝明发包装制品有限公司',//执法检查（或复查）企业（场所）名称
-                    enterpriseAddress: '合水口社区第四工业区1期1栋3,4层',//企业地址
-                    checkPerson: '林志松,王敏学',//执法检查人员
-                    // situation: [],//违法行为或隐患情况
-                    // method: [],//整改落实情况或处置措施
-                    dutyUnit: '马田中队',//责任单位
-                    dutyPerson: '麦柏基',//责任人
-                    finishDate: '2017-02-28',//整改完成期限
-                    remark: '',//备注
-                    links: [{
-                        id: '',
-                        situationId: '1',
-                        method: '2342we',
-                        part: 'sef',
-                        remark: '231',
-                    }, {
-                        id: '',
-                        situationId: '1',
-                        method: '2342we',
-                        part: 'sef',
-                        remark: '231',
-                    }]
-                },
-                // datas1: {
-                //     reviewed: false,
-                //     recorded: false,
-                //     fillUnit: '马田中队',//填报单位
-                //     fillPerson: '蔡春婷',//填报人
-                //     checkDate: '2017-02-21',//执法检查日期
-                //     enterpriseName: '宝明发包装制品有限公司',//执法检查（或复查）企业（场所）名称
-                //     enterpriseAddress: '合水口社区第四工业区1期1栋3,4层',//企业地址
-                //     checkPerson: '林志松,王敏学',//执法检查人员
-                //     situation: [],//违法行为或隐患情况
-                //     method: [],//整改落实情况或处置措施
-                //     dutyUnit: '马田中队',//责任单位
-                //     dutyPerson: '麦柏基',//责任人
-                //     finishDate: '2017-02-28',//整改完成期限
-                //     remark: '',//备注
-                // },
-                // datas1: {},
+                datas: standardDetail,
                 columns2: [{
                     title: '序号',
                     key: 'no',
@@ -299,7 +276,6 @@
                     key: 'remark',
                     width: '15%',
                 }],
-                // datas2: [],
                 situationList: {
                     '1': '烤线没有提供检测报告',
                     '2': '未提供劳保用品发放记录签收表',
@@ -313,25 +289,27 @@
         },
         computed: {
             rowSpan() {
-                let max = 0;
-                if(this.datas1) {
-                    if(this.datas1.links) {
-                        return this.datas1.links.length
+                let result = 1
+                if(this.datas) {
+                    if(this.datas.links) {
+                        result = this.datas.links.length
                     }
-                } else {
-                    return 1
                 }
+                if(this.isEdit) {
+                    result++
+                }
+                return result
             }
         },
         watch: {
-            'datas1.checkDate': function() {
-                if(this.datas1 && this.datas1.checkDate) {
-                    this.datas1.checkDate = moment(this.datas1.checkDate).format('YYYY-MM-DD')
+            'datas.checkDate': function() {
+                if(this.datas && this.datas.checkDate) {
+                    this.datas.checkDate = moment(this.datas.checkDate).format('YYYY-MM-DD')
                 }
             },
-            'datas1.finishDate': function() {
-                if(this.datas1 && this.datas1.finishDate) {
-                    this.datas1.finishDate = moment(this.datas1.finishDate).format('YYYY-MM-DD')
+            'datas.finishDate': function() {
+                if(this.datas && this.datas.finishDate) {
+                    this.datas.finishDate = moment(this.datas.finishDate).format('YYYY-MM-DD')
                 }
             },
         },
@@ -360,16 +338,43 @@
             },
             toggleEditStatus() {
                 this.isEdit = !this.isEdit;
+                if(!this.isEdit) {
+                    let tmp = Object.assign({}, this.datas)
+                    tmp.reviewed = tmp.reviewed ? 1 : 0
+                    tmp.recorded = tmp.recorded ? 1 : 0
+                    recordRectification(tmp).then(resp => {
+                        let respData = resp.data
+                        if(respData.status) {
+                            let data = respData.data
+                            if(data) {
+                                data.reviewed = data.reviewed == 1 ? true : false
+                                data.recorded = data.recorded == 1 ? true : false
+                                if(data.links.length == 0) {
+                                    data.links.push({
+                                        id: '',
+                                        situationId: '',
+                                        method: '',
+                                        part: '',
+                                        rectificateDate: '',
+                                        remark: '',
+                                    })
+                                }
+                            }
+                            this.datas = data
+                        }
+                    })
+                }
             },
             insertLine() {
                 let max = 0;
-                if(this.datas1) {
-                    if(this.datas1.links) {
-                        this.datas1.links.push({
+                if(this.datas) {
+                    if(this.datas.links) {
+                        this.datas.links.push({
                             id: '',
                             situationId: '',
                             method: '',
                             part: '',
+                            rectificateDate: '',
                             remark: '',
                         })
                     }
@@ -377,25 +382,35 @@
             },
             handleDate(index) {
                 setTimeout(() => {
-                    this.datas1.links[index].rectificateDate = moment(this.datas1.links[index].rectificateDate).format('YYYY-MM-DD')
+                    this.datas.links[index].rectificateDate = moment(this.datas.links[index].rectificateDate).format('YYYY-MM-DD')
                 }, 500);
             },
             handleBack() {
                 this.$router.go(-1)
             },
         },
-        mounted() {
-            // loadRectification(this.$route.params.id).then(resp => {
-            //     let respData = resp.data
-            //     if(respData.status) {
-            //         let data = respData.data
-            //         if(data) {
-            //             data.reviewed = data.reviewed == 1 ? true : false
-            //             data.recorded = data.recorded == 1 ? true : false
-            //         }
-            //         this.datas1 = data
-            //     }
-            // })
+        created() {
+            loadRectification(this.$route.params.id).then(resp => {
+                let respData = resp.data
+                if(respData.status) {
+                    let data = respData.data
+                    if(data) {
+                        data.reviewed = data.reviewed == 1 ? true : false
+                        data.recorded = data.recorded == 1 ? true : false
+                        if(data.links.length == 0) {
+                            data.links.push({
+                                id: '',
+                                situationId: '',
+                                method: '',
+                                part: '',
+                                rectificateDate: '',
+                                remark: '',
+                            })
+                        }
+                    }
+                    this.datas = data
+                }
+            })
         }
     }
 </script>
@@ -445,5 +460,4 @@
             }
         }
     }
-    
 </style>
