@@ -63,14 +63,14 @@
                                 <template v-else>{{datas1.checkPerson}}</template>
                             </td>
                             <td>
-                                <Select v-if="isEdit" v-model="datas1.situation[0]" filterable>
+                                <Select v-if="isEdit" v-model="datas1.links[0].situationId" filterable>
                                     <Option v-for="(item, key) in situationList" :value="key" :key="key">{{item}}</Option>
                                 </Select>
-                                <template v-else>{{situationList[datas1.situation[0]]}}</template>
+                                <template v-else>{{situationList[datas1.links[0].situationId]}}</template>
                             </td>
                             <td>
-                                <Input v-if="isEdit" v-model="datas1.method[0]"></Input>
-                                <template v-else>{{datas1.method[0]}}</template>
+                                <Input v-if="isEdit" v-model="datas1.links[0].method"></Input>
+                                <template v-else>{{datas1.links[0].method}}</template>
                             </td>
                             <td :rowspan="rowSpan">
                                 <Input v-if="isEdit" v-model="datas1.dutyUnit"></Input>
@@ -97,14 +97,14 @@
                             </template>
                             <template v-else>
                                 <td>
-                                    <Select v-if="isEdit" v-model="datas1.situation[index]" filterable>
+                                    <Select v-if="isEdit" v-model="datas1.links[index].situationId" filterable>
                                         <Option v-for="(item, key) in situationList" :value="key" :key="key">{{item}}</Option>
                                     </Select>
-                                    <template v-else>{{situationList[datas1.situation[index]]}}</template>
+                                    <template v-else>{{situationList[datas1.links[index].situationId]}}</template>
                                 </td>
                                 <td>
-                                    <Input v-if="isEdit" v-model="datas1.method[index]"></Input>
-                                    <template v-else>{{datas1.method[index]}}</template>
+                                    <Input v-if="isEdit" v-model="datas1.links[index].method"></Input>
+                                    <template v-else>{{datas1.links[index].method}}</template>
                                 </td>
                             </template>
                         </tr>
@@ -132,12 +132,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in datas2">
+                        <tr v-for="(item, index) in datas1.links">
                             <td>{{index + 1}}</td>
                             <td>
                             </td>
                             <td>
-                                {{item['situation']}}
+                                {{situationList[item['situationId']]}}
                             </td>
                             <td>
                                 <img-upload
@@ -224,6 +224,35 @@
                     key: 'remark',
                     width: '7%',
                 }],
+                datas1: {
+                    reviewed: false,
+                    recorded: false,
+                    fillUnit: '马田中队',//填报单位
+                    fillPerson: '蔡春婷',//填报人
+                    checkDate: '2017-02-21',//执法检查日期
+                    enterpriseName: '宝明发包装制品有限公司',//执法检查（或复查）企业（场所）名称
+                    enterpriseAddress: '合水口社区第四工业区1期1栋3,4层',//企业地址
+                    checkPerson: '林志松,王敏学',//执法检查人员
+                    // situation: [],//违法行为或隐患情况
+                    // method: [],//整改落实情况或处置措施
+                    dutyUnit: '马田中队',//责任单位
+                    dutyPerson: '麦柏基',//责任人
+                    finishDate: '2017-02-28',//整改完成期限
+                    remark: '',//备注
+                    links: [{
+                        id: '',
+                        situationId: '1',
+                        method: '2342we',
+                        part: 'sef',
+                        remark: '231',
+                    }, {
+                        id: '',
+                        situationId: '1',
+                        method: '2342we',
+                        part: 'sef',
+                        remark: '231',
+                    }]
+                },
                 // datas1: {
                 //     reviewed: false,
                 //     recorded: false,
@@ -240,7 +269,7 @@
                 //     finishDate: '2017-02-28',//整改完成期限
                 //     remark: '',//备注
                 // },
-                datas1: {},
+                // datas1: {},
                 columns2: [{
                     title: '序号',
                     key: 'no',
@@ -270,7 +299,7 @@
                     key: 'remark',
                     width: '15%',
                 }],
-                datas2: [],
+                // datas2: [],
                 situationList: {
                     '1': '烤线没有提供检测报告',
                     '2': '未提供劳保用品发放记录签收表',
@@ -285,25 +314,13 @@
         computed: {
             rowSpan() {
                 let max = 0;
-                if(!this.datas1) {
-                    this.datas1 = []
+                if(this.datas1) {
+                    if(this.datas1.links) {
+                        return this.datas1.links.length
+                    }
+                } else {
+                    return 1
                 }
-                if(!this.datas1.situation) {
-                    this.datas1 = Object.assign({}, this.datas1, {situation: []})
-                }
-                if(!this.datas1.method) {
-                    this.datas1 = Object.assign({}, this.datas1, {method: []})
-                }
-                let situationLength = this.datas1.situation.length;
-                let methodLength = this.datas1.method.length;
-                max = situationLength > methodLength ? situationLength : methodLength;
-                if(max == 0) {
-                    max = 1;
-                }
-                if(this.isEdit) {
-                    max++;
-                }
-                return max;
             }
         },
         watch: {
@@ -317,26 +334,6 @@
                     this.datas1.finishDate = moment(this.datas1.finishDate).format('YYYY-MM-DD')
                 }
             },
-            'datas1.situation': function() {
-                if(this.datas1 && this.datas1.situation) {
-                    this.datas1.situation.forEach((item, index) => {
-                        if(this.datas2[index]) {
-                            if(this.datas2[index].situation != this.situationList[item]) {
-                                this.datas2[index].situation = this.situationList[item];
-                            }
-                        } else {
-                            this.datas2.push({
-                                part: null,
-                                situation: this.situationList[item],
-                                beforeImg: null,
-                                rectificateDate: null,
-                                afterImg: null,
-                                remark: null
-                            });
-                        }
-                    });
-                }
-            }
         },
         methods: {
             calRowSpan(type) {
@@ -366,26 +363,21 @@
             },
             insertLine() {
                 let max = 0;
-                if(!this.datas1) {
-                    this.datas1 = []
+                if(this.datas1) {
+                    if(this.datas1.links) {
+                        this.datas1.links.push({
+                            id: '',
+                            situationId: '',
+                            method: '',
+                            part: '',
+                            remark: '',
+                        })
+                    }
                 }
-                if(!this.datas1.situation) {
-                    this.datas1 = Object.assign({}, this.datas1, {situation: []})
-                }
-                if(!this.datas1.method) {
-                    this.datas1 = Object.assign({}, this.datas1, {method: []})
-                }
-                let situationLength = this.datas1.situation.length;
-                let methodLength = this.datas1.method.length;
-                max = situationLength > methodLength ? situationLength : methodLength;
-                if(max == 0) {
-                    this.datas1.situation.push('');
-                }
-                this.datas1.situation.push('');
             },
             handleDate(index) {
                 setTimeout(() => {
-                    this.datas2[index].rectificateDate = moment(this.datas2[index].rectificateDate).format('YYYY-MM-DD')
+                    this.datas1.links[index].rectificateDate = moment(this.datas1.links[index].rectificateDate).format('YYYY-MM-DD')
                 }, 500);
             },
             handleBack() {
@@ -393,17 +385,17 @@
             },
         },
         mounted() {
-            loadRectification(this.$route.params.id).then(resp => {
-                let respData = resp.data
-                if(respData.status) {
-                    let data = respData.data
-                    if(data) {
-                        data.reviewed = data.reviewed == 1 ? true : false
-                        data.recorded = data.recorded == 1 ? true : false
-                    }
-                    this.datas1 = data
-                }
-            })
+            // loadRectification(this.$route.params.id).then(resp => {
+            //     let respData = resp.data
+            //     if(respData.status) {
+            //         let data = respData.data
+            //         if(data) {
+            //             data.reviewed = data.reviewed == 1 ? true : false
+            //             data.recorded = data.recorded == 1 ? true : false
+            //         }
+            //         this.datas1 = data
+            //     }
+            // })
         }
     }
 </script>
