@@ -10,6 +10,7 @@
             </div>
         </div>
         <div class="ws-content">
+            <Spin size="large" fix v-if="spinShow"></Spin>
             <div class="detail-check">
                 <label>是否复查：</label>
                 <i-switch v-model="datas.reviewed" :disabled="!isEdit">
@@ -51,12 +52,10 @@
                                 <span v-else>{{datas.checkDate}}</span>
                             </td>
                             <td :rowspan="rowSpan">
-                                <Input v-if="isEdit" v-model="datas.enterpriseName"></Input>
-                                <span v-else>{{datas.enterpriseName}}</span>
+                                {{datas.enterpriseName}}
                             </td>
                             <td :rowspan="rowSpan">
-                                <Input v-if="isEdit" v-model="datas.enterpriseAddress"></Input>
-                                <template v-else>{{datas.enterpriseAddress}}</template>
+                                {{datas.enterpriseAddress}}
                             </td>
                             <td :rowspan="rowSpan">
                                 <Input v-if="isEdit" v-model="datas.checkPerson"></Input>
@@ -194,6 +193,7 @@
         },
         data() {
             return {
+                spinShow: true,
                 defaultList: [
                     {
                         'name': 'a42bdcc1178e62b4694c830f028db5c0',
@@ -337,7 +337,7 @@
                 return false;
             },
             toggleEditStatus() {
-                this.isEdit = !this.isEdit;
+                this.isEdit = !this.isEdit
                 if(!this.isEdit) {
                     let tmp = Object.assign({}, this.datas)
                     tmp.reviewed = tmp.reviewed ? 1 : 0
@@ -361,6 +361,9 @@
                                 }
                             }
                             this.datas = data
+                            this.$Message.success('保存成功！')
+                        } else {
+                            this.$Message.error('添加失败！')
                         }
                     })
                 }
@@ -409,6 +412,7 @@
                         }
                     }
                     this.datas = data
+                    this.spinShow = false
                 }
             })
         }

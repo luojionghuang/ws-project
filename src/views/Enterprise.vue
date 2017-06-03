@@ -32,6 +32,7 @@
 </template>
 
 <script>
+    import { loadEnterprises, insertEnterprise } from '@/services/enterprise'
     export default {
         name: 'enterprise',
         data() {
@@ -63,11 +64,27 @@
         },
         methods: {
             saveModel() {
-
+                insertEnterprise(this.formItem).then(resp => {
+                    if(resp.data) {
+                        if(resp.data.status) {
+                            loadEnterprises(1).then(resp => {
+                                if(resp.data) {
+                                    this.datas = resp.data
+                                    newModel = false
+                                    this.$Message.success('添加成功！')
+                                }
+                            })
+                        }
+                    }
+                })
             }
         },
         mounted() {
-            
+            loadEnterprises(1).then(resp => {
+                if(resp.data) {
+                    this.datas = resp.data
+                }
+            })
         }
     }
 </script>

@@ -5,13 +5,13 @@
                 <Icon type="ios-paper"></Icon>
                 企业安全生产管理平台
             </Menu-item>
-            <router-link to="rectificationTable">
+            <router-link to="/rectificationTable">
                 <Menu-item name="1">
                     <Icon type="ios-paper"></Icon>
                     台账
                 </Menu-item>
             </router-link>
-            <router-link to="enterprise">
+            <router-link to="/enterprise">
                 <Menu-item name="2">
                     <Icon type="ios-people"></Icon>
                     企业管理

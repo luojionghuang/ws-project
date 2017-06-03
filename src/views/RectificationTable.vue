@@ -9,15 +9,23 @@
                 <Modal
                     v-model="newModel"
                     title="整治添加">
-                    <p>呵呵</p>
+                    <Form
+                        :model="formItem"
+                        :label-width="80">
+                        <Form-item label="企业">
+                            <Select v-model="formItem.enterpriseId" style="width:200px">
+                                <Option v-for="item in enterpriseList" :value="item.id" :key="item">{{ item.name }}</Option>
+                            </Select>
+                        </Form-item>
+                    </Form>
                     <div slot="footer">
-                        <Button type="primary" @click="saveModel">保存</Button>
+                        <Button type="primary" @click="saveModel">新建</Button>
                     </div>
                 </Modal>
             </div>
         </div>
         <div class="ws-content">
-            <div class="search-list">
+            <!-- <div class="search-list">
                 <Row :gutter="16">
                     <Col span="6">
                         <label>检测日期</label>
@@ -28,11 +36,11 @@
                         <Input v-model="sEnterpriseName"></Input>
                     </Col>
                 </Row>
-            </div>
-            <Table :columns="columns" :data="datas"></Table>
+            </div> -->
+            <Table :columns="columns" :data="pagePlugin.list"></Table>
             <div style="margin: 10px;overflow: hidden">
                 <div style="float: right;">
-                    <Page :total="100" :current="1"></Page>
+                    <Page :total="pagePlugin.total" :current="pagePlugin.curPage"></Page>
                 </div>
             </div>
         </div>
@@ -40,11 +48,21 @@
 </template>
 
 <script>
-    import { loadRectificationMains } from '@/services/rectification.js'
+    import { loadAllEnterprises } from '@/services/enterprise.js'
+    import { loadRectificationMains, initRectificationMain } from '@/services/rectification.js'
     export default {
         data() {
             return {
                 newModel: false,
+                formItem: {
+                    enterpriseId: '',
+                },
+                enterpriseList: [],
+                pagePlugin: {
+                    total: 0,
+                    curPage: 1,
+                    list: [],
+                },
                 sCheckDate: '',
                 sEnterpriseName: '',
                 columns: [{
@@ -125,17 +143,29 @@
                         ])
                     }
                 }],
-                datas: []
             }
         },
         methods: {
             saveModel() {
-
+                initRectificationMain(this.formItem).then(resp => {
+                    if(resp.data) {
+                        if(resp.data.status) {
+                            loadRectificationMains(1).then(resp => {
+                                this.pagePlugin.list = resp.data
+                                newModel = false
+                                this.$Message.success('添加成功！')
+                            });
+                        }
+                    }
+                })
             }
         },
         mounted() {
+            loadAllEnterprises().then(resp => {
+                this.enterpriseList = resp.data
+            })
             loadRectificationMains(1).then(resp => {
-                this.datas = resp.data
+                this.pagePlugin = resp.data
             });
         }
     }
