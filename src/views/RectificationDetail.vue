@@ -5,7 +5,7 @@
                 <Button type="primary" icon="arrow-return-left" @click="handleBack">返回</Button>
             </div>
             <div class="ws-header-right">
-                <Button v-if="!isEdit" type="primary" icon="document">导出Word</Button>
+                <a :href="exportUrl"><Button v-if="!isEdit" type="primary" icon="document">导出Word</Button></a>
                 <Button :type="isEdit ? 'success' : 'primary'" :icon="isEdit ? 'checkmark' : 'edit'" @click="toggleEditStatus">{{isEdit ? '保存' : '编辑'}}</Button>
             </div>
         </div>
@@ -164,7 +164,7 @@
 <script>
     import moment from 'moment'
     import ImgUpload from '@/components/ImgUpload'
-    import { loadRectification, recordRectification } from '@/services/rectification'
+    import { loadRectification, recordRectification, exportDoc } from '@/services/rectification'
     const standardDetail = {
                     reviewed: false,
                     recorded: false,
@@ -299,6 +299,9 @@
                     result++
                 }
                 return result
+            },
+            exportUrl() {
+                return 'http://127.0.0.1:9000/wsproject/rectification/exportDoc?rectificationMainId=' + this.datas.id
             }
         },
         watch: {
@@ -365,6 +368,8 @@
                         } else {
                             this.$Message.error('添加失败！')
                         }
+                    }).catch(() => {
+                        this.$Message.error('服务器错误！')
                     })
                 }
             },

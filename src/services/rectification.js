@@ -1,24 +1,31 @@
 import { fetchGet, fetchPost } from '@/conf/fetch'
 import qs from 'qs'
 
+// let ipPre = 'http://127.0.0.1:9000'
+let ipPre = ''
+
 /**
  * 分页加载整治列表
  * @param {Number} curPage 
  */
-const loadRectificationMains = (curPage) => fetchGet('http://127.0.0.1:9000/wsproject/rectification/loadRectificationMains', {
+const loadRectificationMains = (curPage) => fetchGet(ipPre + '/wsproject/rectification/loadRectificationMains', {
     curPage,
 })
 
-const loadRectification = (rectificationMainId) => fetchPost('http://127.0.0.1:9000/wsproject/rectification/loadRectification/' + rectificationMainId, {})
+const loadRectification = (rectificationMainId) => fetchPost(ipPre + '/wsproject/rectification/loadRectification/' + rectificationMainId, {})
 
-const initRectificationMain = (rectificationMain) => fetchPost('http://127.0.0.1:9000/wsproject/rectification/initRectificationMain', rectificationMain)
+const initRectificationMain = (rectificationMain) => fetchPost(ipPre + '/wsproject/rectification/initRectificationMain', rectificationMain)
 
 /**
  * 初始化整治信息
  * @param {Object} rectification 
  */
-const recordRectification = (rectification) => fetchPost('http://127.0.0.1:9000/wsproject/rectification/recordRectification', {
+const recordRectification = (rectification) => fetchPost(ipPre + '/wsproject/rectification/recordRectification', {
     rectification: JSON.stringify(rectification)
+})
+
+const exportDoc = (rectificationMainId) => fetchPost(ipPre + '/wsproject/rectification/exportDoc', {
+    rectificationMainId
 })
 
 export {
@@ -26,4 +33,5 @@ export {
     loadRectification,
     initRectificationMain,
     recordRectification,
+    exportDoc,
 }
