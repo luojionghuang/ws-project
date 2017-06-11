@@ -48,8 +48,8 @@
 </template>
 
 <script>
-    import { loadAllEnterprises } from '@/services/enterprise.js'
-    import { loadRectificationMains, initRectificationMain } from '@/services/rectification.js'
+    import { loadAllEnterprises } from '@/services/enterprise'
+    import { loadRectificationMains, initRectificationMain, delRectification } from '@/services/rectification'
     export default {
         data() {
             return {
@@ -129,17 +129,26 @@
                                     }
                                 }
                             }, '查看'),
-                            h('Button', {
+                            h('Poptip', {
                                 props: {
-                                    type: 'error',
-                                    size: 'small',
+                                    confirm: true,
+                                    title: '您确认删除这条内容吗？',
                                 },
                                 on: {
-                                    click: () => {
-                                         console.log('是否要删除？');
+                                    'on-ok': () => {
+                                         this.delRectification(row.id)
+                                    },
+                                    'on-cancel': () => {
                                     }
                                 }
-                            }, '删除')
+                            }, [
+                                h('Button', {
+                                    props: {
+                                        type: 'error',
+                                        size: 'small',
+                                    },
+                                }, '删除')
+                            ])
                         ])
                     }
                 }],
@@ -151,10 +160,26 @@
                     if(resp.data) {
                         if(resp.data.status) {
                             loadRectificationMains(1).then(resp => {
-                                this.pagePlugin.list = resp.data
-                                newModel = false
+                                this.pagePlugin = resp.data
+                                this.newModel = false
                                 this.$Message.success('添加成功！')
-                            });
+                            })
+                        } else {
+                            this.$Message.error('添加失败！')
+                        }
+                    }
+                })
+            },
+            delRectification(id) {
+                delRectification(id).then(resp => {
+                    if(resp.data) {
+                        if(resp.data.status) {
+                            loadRectificationMains(1).then(resp => {
+                                this.pagePlugin = resp.data
+                                this.$Message.success('删除成功！')
+                            })
+                        } else {
+                            this.$Message.error('删除失败！')
                         }
                     }
                 })

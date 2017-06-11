@@ -70,7 +70,7 @@
                             loadEnterprises(1).then(resp => {
                                 if(resp.data) {
                                     this.datas = resp.data
-                                    newModel = false
+                                    this.newModel = false
                                     this.$Message.success('添加成功！')
                                 }
                             })

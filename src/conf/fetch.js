@@ -1,6 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
 
+let ipPre = process.env.NODE_ENV === 'production' ? '' : 'http://127.0.0.1:9000'
+
 // export default (url, params) => {
 // 	return axios({
 // 		method: 'post',
@@ -10,14 +12,14 @@ import qs from 'qs'
 // 	})
 // }
 const fetchGet = (url, params) => {
-	return axios.get(url, {
+	return axios.get(ipPre + url, {
 		params,
 		timeout: 5000,
 	})
 }
 
 const fetchPost = (url, params) => {
-	return axios.post(url, qs.stringify(params), {
+	return axios.post(ipPre + url, qs.stringify(params), {
 		timeout: 5000,
 	})
 	// return axios({
