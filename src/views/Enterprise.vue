@@ -8,7 +8,7 @@
                 <Button type="primary" icon="plus" @click="newModel = true">创建</Button>
                 <Modal
                     v-model="newModel"
-                    title="整治添加">
+                    title="企业添加">
                     <Form
                         :model="formItem"
                         :label-width="80">
