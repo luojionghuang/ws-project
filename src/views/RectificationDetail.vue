@@ -165,11 +165,12 @@
     import moment from 'moment'
     import ImgUpload from '@/components/ImgUpload'
     import { loadRectification, recordRectification, exportDoc } from '@/services/rectification'
+    import { loadSituations } from '@/services/situation'
     const standardDetail = {
                     reviewed: false,
                     recorded: false,
-                    fillUnit: '',//填报单位
-                    fillPerson: '',//填报人
+                    fillUnit: '马田中队',//填报单位
+                    fillPerson: '蔡春婷',//填报人
                     checkDate: '',//执法检查日期
                     enterpriseName: '',//执法检查（或复查）企业（场所）名称
                     enterpriseAddress: '',//企业地址
@@ -277,13 +278,6 @@
                     width: '15%',
                 }],
                 situationList: {
-                    '1': '烤线没有提供检测报告',
-                    '2': '未提供劳保用品发放记录签收表',
-                    '3': '未建立事故隐患排查治理记录档案',
-                    '4': '未提供2017年安全资金投入计划',
-                    '5': '未建立安全生产责任制',
-                    '6': '为健全应急演练制度',
-                    '7': '未提供员工三级教育培训档案'
                 }
             }
         },
@@ -397,28 +391,44 @@
                 this.$router.go(-1)
             },
         },
-        created() {
-            loadRectification(this.$route.params.id).then(resp => {
-                let respData = resp.data
-                if(respData.status) {
-                    let data = respData.data
-                    if(data) {
-                        data.reviewed = data.reviewed == 1 ? true : false
-                        data.recorded = data.recorded == 1 ? true : false
-                        if(data.links.length == 0) {
-                            data.links.push({
-                                id: '',
-                                situationId: '',
-                                method: '',
-                                part: '',
-                                rectificateDate: '',
-                                remark: '',
-                            })
-                        }
+        mounted() {
+            //加载违法行为列表
+            loadSituations().then(resp => {
+                if(resp.data) {
+                    let datas = resp.data
+                    for(let tmp of datas) {
+                        this.situationList[tmp.id] = tmp.name
                     }
-                    this.datas = data
-                    this.spinShow = false
                 }
+                //加载检查信息
+                loadRectification(this.$route.params.id).then(resp => {
+                    let respData = resp.data
+                    if(respData.status) {
+                        let data = respData.data
+                        if(data) {
+                            data.reviewed = data.reviewed == 1 ? true : false
+                            data.recorded = data.recorded == 1 ? true : false
+                            if(data.links.length == 0) {
+                                data.links.push({
+                                    id: '',
+                                    situationId: '',
+                                    method: '',
+                                    part: '',
+                                    rectificateDate: '',
+                                    remark: '',
+                                })
+                            }
+                        }
+                        if(!data.fillUnit) {
+                            data.fillUnit = '马田中队'
+                        }
+                        if(!data.fillPerson) {
+                            data.fillPerson = '蔡春婷'
+                        }
+                        this.datas = data
+                        this.spinShow = false
+                    }
+                })
             })
         }
     }

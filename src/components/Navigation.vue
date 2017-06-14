@@ -23,7 +23,7 @@
                     数据管理
                 </template>
                 <Menu-group title="维护">
-                    <router-link to="situation"><Menu-item name="3-1">违法行为</Menu-item></router-link>
+                    <router-link to="/situation"><Menu-item name="3-1">违法行为</Menu-item></router-link>
                 </Menu-group>
             </Submenu>
         </Menu>
@@ -43,7 +43,7 @@
 
 <style lant="scss" scoped>
     .content-wrapper {
-        width: 80%;
+        width: 85%;
         margin: 10px auto;
     }
 </style>
